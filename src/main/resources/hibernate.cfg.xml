@@ -17,5 +17,12 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.jdbc.time_zone">Asia/Novosibirsk</property>
         <mapping class="ru.work.cars.model.User"/>
+        <mapping class="ru.work.cars.model.Car"/>
+        <mapping class="ru.work.cars.model.Body"/>
+        <mapping class="ru.work.cars.model.Engine"/>
+        <mapping class="ru.work.cars.model.Mark"/>
+        <mapping class="ru.work.cars.model.Transmission"/>
+        <mapping class="ru.work.cars.model.Post"/>
+        <mapping class="ru.work.cars.model.Photo"/>
     </session-factory>
 </hibernate-configuration>

@@ -21,7 +21,7 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Cars</a>
+<!--        <a class="navbar-brand" href="#">Cars</a>-->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,11 +33,11 @@
                     <span th:text="${user.username}"></span>
                     <span> | Выйти</span>
                 </a>
-<!--                <a class="nav-item nav-link" th:if="${user != null}" th:href="@{/auth/login}">-->
-<!--                    <span th:text="${user.username}"></span>-->
-<!--                    <span> | Войти </span>-->
-<!--                </a>-->
-<!--                <a class="nav-item nav-link" th:if="${user != null and user.name == 'Admin'}" th:href="@{/settings}">Настройки</a>-->
+                <!--                <a class="nav-item nav-link" th:if="${user != null}" th:href="@{/auth/login}">-->
+                <!--                    <span th:text="${user.username}"></span>-->
+                <!--                    <span> | Войти </span>-->
+                <!--                </a>-->
+                <!--                <a class="nav-item nav-link" th:if="${user != null and user.name == 'Admin'}" th:href="@{/settings}">Настройки</a>-->
             </div>
         </div>
     </nav>
@@ -89,7 +89,8 @@
 
         <div>
             <div class="ui-button addAd" th:if="${user.username != 'Гость'}">
-                <a class="nav-ad nav-link" th:href="@{/addAd}">
+<!--                <a class="nav-ad nav-link" th:href="@{/addPost}">-->
+                <a th:href="@{/addPost}">
                     <button type="submit" class="btn btn-success mt-3">Добавить объявление</button>
                 </a>
             </div>
@@ -103,37 +104,22 @@
             <tr>
                 <th scope="col">Авто</th>
                 <th scope="col">Название</th>
-                <!--                <th scope="col">Марка</th>-->
                 <th scope="col">Тип кузова</th>
                 <th scope="col">Статус</th>
                 <th scope="col">Цена</th>
-                <!--                <th scope="col">Дата публикации</th>-->
             </tr>
             </thead>
             <tbody>
-<!--            <tr th:each="ad: ${ads}">-->
-<!--                <div class="button ad">-->
-
-<!--                    <td>-->
-<!--                        <img th:width="50" th:high="50" th:src="@{|/photoAdFirst/${ad.id}|}">-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <a th:href="@{|/descriptionAd/${ad.id}|}" th:text="${ad.name}"></a>-->
-<!--                    </td>-->
-<!--                    &lt;!&ndash;                    <td th:text="${ad.mark.name}"></td>&ndash;&gt;-->
-<!--                    <td th:text="${ad.body.name}"></td>-->
-<!--                    <td>-->
-<!--                                            <span th:if="${ad.sale}">-->
-<!--                                                Продано-->
-<!--                                            </span>-->
-<!--                        <span th:if="${!ad.sale}">-->
-<!--                                                В наличии-->
-<!--                                            </span>-->
-<!--                    </td>-->
-<!--                    <td th:text="${#numbers.formatDecimal( ad.price,3,'POINT',2,'COMMA')}"></td>-->
-<!--                    &lt;!&ndash;                    <td th:text="${#dates.format(ad.created, 'dd-MM-yyyy HH:mm')}"></td>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </tr>-->
+            <tr th:each="post: ${posts}">
+                <td th:text="Авто"></td>
+                <td th:text="${post.name}"></td>
+                <td th:text="${post.body.name}"></td>
+                <td>
+                    <span th:if="${post.sale}">Продано</span>
+                    <span th:if="${!post.sale}">В наличии</span>
+                </td>
+                <td th:text="${post.price}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
