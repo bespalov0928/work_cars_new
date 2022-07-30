@@ -22,4 +22,8 @@ public class PostService {
     public void savePost(Post post){
         postStore.savePost(post);
     }
+
+    public Post findById(int id){
+        return postStore.findById(id);
+    }
 }

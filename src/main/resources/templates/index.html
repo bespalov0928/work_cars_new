@@ -21,7 +21,7 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<!--        <a class="navbar-brand" href="#">Cars</a>-->
+        <!--        <a class="navbar-brand" href="#">Cars</a>-->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -89,7 +89,7 @@
 
         <div>
             <div class="ui-button addAd" th:if="${user.username != 'Гость'}">
-<!--                <a class="nav-ad nav-link" th:href="@{/addPost}">-->
+                <!--                <a class="nav-ad nav-link" th:href="@{/addPost}">-->
                 <a th:href="@{/addPost}">
                     <button type="submit" class="btn btn-success mt-3">Добавить объявление</button>
                 </a>
@@ -112,7 +112,9 @@
             <tbody>
             <tr th:each="post: ${posts}">
                 <td th:text="Авто"></td>
-                <td th:text="${post.name}"></td>
+                <td>
+                    <a th:href="@{|/descr/${post.id}|}" th:text="${post.name}"></a>
+                </td>
                 <td th:text="${post.body.name}"></td>
                 <td>
                     <span th:if="${post.sale}">Продано</span>

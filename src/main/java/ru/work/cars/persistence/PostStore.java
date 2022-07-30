@@ -27,4 +27,8 @@ public class PostStore implements Store {
             return post;
         }, sf);
     }
+
+    public Post findById(int id) {
+        return tx(session -> session.get(Post.class, id), sf);
+    }
 }

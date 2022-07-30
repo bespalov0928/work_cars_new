@@ -4,10 +4,7 @@ import org.apache.catalina.LifecycleState;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.work.cars.model.*;
 import ru.work.cars.persistence.EngineStore;
 import ru.work.cars.persistence.TransmissionStore;
@@ -79,5 +76,15 @@ public class IndexController {
         post.setEngine(engine);
         postService.savePost(post);
         return "redirect:/index";
+    }
+
+    @GetMapping("/descr/{idPost}")
+    public String getBodyService(Model model, @PathVariable("idPost") int idPost) {
+        org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByName(userContext.getUsername());
+        Post post = postService.findById(idPost);
+        model.addAttribute("post", post);
+        model.addAttribute("user", user);
+        return "descr";
     }
 }
