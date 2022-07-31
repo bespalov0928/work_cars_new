@@ -43,7 +43,11 @@ public class PostStore implements Store {
     }
 
     public Post findById(int id) {
-        return tx(session -> session.get(Post.class, id), sf);
+        return tx(session -> {
+            return (Post) session.createQuery("select p from Post p join fetch p.photos where p.id=:id")
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }, sf);
     }
 
     public void postSale(int id) {

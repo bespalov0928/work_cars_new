@@ -118,13 +118,13 @@
                         </p>
                     </div>
                 </div>
-                <!--                <div class="row">-->
-                <!--                    <p>-->
-                <!--                        <tr th:each="ph:${hotos}">-->
-                <!--                            <img th:width="300" th:hight="300" th:src="@{|/photoPost/${ph.getId()}|}">-->
-                <!--                        </tr>-->
-                <!--                    </p>-->
-                <!--                </div>-->
+                <div class="row">
+                    <p>
+                        <tr th:each="ph:${photos}">
+                            <img th:width="300" th:hight="300" th:src="@{|/getPhoto/${ph.getId()}|}">
+                        </tr>
+                    </p>
+                </div>
             </div>
         </div>
         <div class="btn-group" th:if="${user.username.equals('admin') or user.username.equals(post.user.username)}">

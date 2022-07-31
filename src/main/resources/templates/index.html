@@ -111,7 +111,9 @@
             </thead>
             <tbody>
             <tr th:each="post: ${posts}">
-                <td th:text="Авто"></td>
+                <td>
+                    <img th:width="50" th:hight="50" th:src="@{|/getPhotoPostFirst/${post.id}|}">
+                </td>
                 <td>
                     <a th:href="@{|/descr/${post.id}|}" th:text="${post.name}"></a>
                 </td>

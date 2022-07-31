@@ -1,15 +1,27 @@
 package ru.work.cars.controller;
 
 import org.apache.catalina.LifecycleState;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.work.cars.model.*;
 import ru.work.cars.persistence.EngineStore;
+import ru.work.cars.persistence.PhotoStore;
 import ru.work.cars.persistence.TransmissionStore;
 import ru.work.cars.service.*;
 
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import org.springframework.core.io.Resource;
+
+//import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,19 +35,22 @@ public class IndexController {
     private final EngineService engineService;
     private final TransmissionService transmissionService;
     private final UserService userService;
+    private final PhotoService photoService;
 
     public IndexController(MarkService markService,
                            PostService postService,
                            BodyService bodyService,
                            EngineService engineService,
                            TransmissionService transmissionService,
-                           UserService userService) {
+                           UserService userService,
+                           PhotoService photoService) {
         this.markService = markService;
         this.postService = postService;
         this.bodyService = bodyService;
         this.engineService = engineService;
         this.transmissionService = transmissionService;
         this.userService = userService;
+        this.photoService = photoService;
     }
 
     @GetMapping({"/", "/index"})
@@ -61,7 +76,8 @@ public class IndexController {
                            @RequestParam(value = "mark_id", required = false) int idMark,
                            @RequestParam(value = "body_id", required = false) int idBody,
                            @RequestParam(value = "transmission_id", required = false) int idTransmission,
-                           @RequestParam(value = "engine_id", required = false) int idEngine
+                           @RequestParam(value = "engine_id", required = false) int idEngine,
+                           @RequestParam(value = "files") MultipartFile[] files
     ) throws IOException {
         org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByName(userContext.getUsername());
@@ -75,7 +91,10 @@ public class IndexController {
         post.setTransmission(transmission);
         post.setEngine(engine);
         postService.savePost(post);
-//        postService.savePostNew(post, user, mark, body, transmission, engine);
+        for (MultipartFile file : files) {
+            Photo ph = Photo.of(file.getBytes(), post);
+            photoService.savePhoto(ph);
+        }
         return "redirect:/index";
     }
 
@@ -84,8 +103,10 @@ public class IndexController {
         org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByName(userContext.getUsername());
         Post post = postService.findById(idPost);
+        List<Photo> photoList = post.getPhotos();
         model.addAttribute("post", post);
         model.addAttribute("user", user);
+        model.addAttribute("photos", photoList);
         return "descr";
     }
 
@@ -110,7 +131,8 @@ public class IndexController {
                              @RequestParam(value = "mark_id", required = false) int idMark,
                              @RequestParam(value = "body_id", required = false) int idBody,
                              @RequestParam(value = "transmission_id", required = false) int idTransmission,
-                             @RequestParam(value = "engine_id", required = false) int idEngine) {
+                             @RequestParam(value = "engine_id", required = false) int idEngine,
+                             @RequestParam(value = "files") MultipartFile[] files) throws IOException {
 
         org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByName(userContext.getUsername());
@@ -124,7 +146,34 @@ public class IndexController {
         post.setTransmission(transmission);
         post.setEngine(engine);
         postService.postUpdate(post);
+        post.getPhotos().clear();
+        photoService.delPhoto(post.getId());
+        for (MultipartFile file : files) {
+            Photo ph = Photo.of(file.getBytes(), post);
+            photoService.savePhoto(ph);
+        }
         return "redirect:/index";
+    }
+
+    @GetMapping("/getPhotoPostFirst/{idPost}")
+    public ResponseEntity<Resource> photoFindFirst(@PathVariable("idPost") int idPost) {
+        Post post = postService.findById(idPost);
+        byte[] photo = post.getPhotos().get(0).getPhoto();
+        return ResponseEntity.ok()
+                .headers(new HttpHeaders())
+                .contentLength(photo.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new ByteArrayResource(photo));
+    }
+
+    @GetMapping("/getPhoto/{idPhoto}")
+    public ResponseEntity<Resource> getPhotoPost(@PathVariable("idPhoto") int idPhoto) {
+        byte[] photo = photoService.findById(idPhoto).getPhoto();
+        return ResponseEntity.ok()
+                .headers(new HttpHeaders())
+                .contentLength(photo.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new ByteArrayResource(photo));
     }
 
 }

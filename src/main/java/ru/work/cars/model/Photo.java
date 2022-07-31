@@ -48,4 +48,5 @@ public class Photo {
     public void setPost(Post post) {
         this.post = post;
     }
+
 }

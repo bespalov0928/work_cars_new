@@ -149,4 +149,6 @@ public class Post {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+
 }
