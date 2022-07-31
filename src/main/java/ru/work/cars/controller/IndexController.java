@@ -67,7 +67,7 @@ public class IndexController {
         User user = userService.findByName(userContext.getUsername());
         Mark mark = markService.findById(idMark);
         Body body = bodyService.findById(idBody);
-        Transmission transmission= transmissionService.findById(idTransmission);
+        Transmission transmission = transmissionService.findById(idTransmission);
         Engine engine = engineService.findById(idEngine);
         post.setUser(user);
         post.setMark(mark);
@@ -75,6 +75,7 @@ public class IndexController {
         post.setTransmission(transmission);
         post.setEngine(engine);
         postService.savePost(post);
+//        postService.savePostNew(post, user, mark, body, transmission, engine);
         return "redirect:/index";
     }
 
@@ -87,4 +88,43 @@ public class IndexController {
         model.addAttribute("user", user);
         return "descr";
     }
+
+    @GetMapping("/postSale/{idPost}")
+    public String postSale(@PathVariable("idPost") int idPost) {
+        postService.postSale(idPost);
+        return "redirect:/index";
+    }
+
+    @GetMapping("/postUpdate/{idPost}")
+    public String postUpdate(Model model, @PathVariable("idPost") int idPost) {
+        model.addAttribute("marks", markService.findAll());
+        model.addAttribute("bodies", bodyService.findAll());
+        model.addAttribute("transmissions", transmissionService.findAll());
+        model.addAttribute("engines", engineService.findAll());
+        model.addAttribute("post", postService.findById(idPost));
+        return "updatePost";
+    }
+
+    @PostMapping("/updatePost")
+    public String updatePost(@ModelAttribute Post post,
+                             @RequestParam(value = "mark_id", required = false) int idMark,
+                             @RequestParam(value = "body_id", required = false) int idBody,
+                             @RequestParam(value = "transmission_id", required = false) int idTransmission,
+                             @RequestParam(value = "engine_id", required = false) int idEngine) {
+
+        org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByName(userContext.getUsername());
+        Mark mark = markService.findById(idMark);
+        Body body = bodyService.findById(idBody);
+        Transmission transmission = transmissionService.findById(idTransmission);
+        Engine engine = engineService.findById(idEngine);
+        post.setUser(user);
+        post.setMark(mark);
+        post.setBody(body);
+        post.setTransmission(transmission);
+        post.setEngine(engine);
+        postService.postUpdate(post);
+        return "redirect:/index";
+    }
+
 }

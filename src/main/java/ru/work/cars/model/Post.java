@@ -18,6 +18,8 @@ public class Post {
     @Column(name = "mileage")
     private int mileage;
     @ManyToOne(cascade = CascadeType.ALL)
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "mark_id")
     private Mark mark;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -29,7 +31,7 @@ public class Post {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "transmission_id")
     private Transmission transmission;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "description")

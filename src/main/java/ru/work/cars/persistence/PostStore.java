@@ -1,8 +1,9 @@
 package ru.work.cars.persistence;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.work.cars.model.Post;
+import ru.work.cars.model.*;
 
 import java.util.List;
 
@@ -28,7 +29,35 @@ public class PostStore implements Store {
         }, sf);
     }
 
+    public Post savePost(Post post, User user, Mark mark, Body body, Transmission transmission, Engine engine) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        post.setUser(user);
+        post.setMark(mark);
+        post.setBody(body);
+        post.setTransmission(transmission);
+        post.setEngine(engine);
+        session.save(post);
+        session.getTransaction().commit();
+        return post;
+    }
+
     public Post findById(int id) {
         return tx(session -> session.get(Post.class, id), sf);
     }
+
+    public void postSale(int id) {
+        tx(session -> session.createQuery("update Post p set p.sale=:sale where p.id=:id")
+                .setParameter("sale", true)
+                .setParameter("id", id)
+                .executeUpdate(), sf);
+    }
+
+    public Post postUpdate(Post post) {
+        return tx(session -> {
+            session.update(post);
+            return post;
+        }, sf);
+    }
+
 }

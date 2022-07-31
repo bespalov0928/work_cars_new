@@ -44,7 +44,6 @@
             </div>
 
             <div class="card-bode">
-
                 <div class="row">
                     <div class="col-xs-3 col-md-3">
                         <p>
@@ -71,7 +70,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-xs-3 col-md-3">
                         <p>
@@ -99,26 +97,34 @@
                         </p>
                     </div>
                 </div>
+
+                <!--                <div class="row">-->
+                <!--                    <div class="col-xs-3 col-md-3">-->
+                <!--                        <label for="description">Описание</label>-->
+                <!--                        <textarea class="form-control" name="description" id="description" rows="5"></textarea>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
                 <p>
-                    <b>Описание</b>
-                    <span class="card-text" th:text="${post.description}"></span>
+                    <b>Описание:</b>
+                    <span class="card-text" th:text="${post.description}"/>
                 </p>
+
                 <div class="row">
                     <div class="col-xs-3 col-md-3">
                         <p>
                             <b>Автор</b>
-                            <span class="card-text" th:text="${post.user.username}"></span>
+                            <span class="card-text" th:text="${post.user.username}"/>
                         </p>
                     </div>
                 </div>
-                <div class="row">
-                    <p>
-                        <tr th:each="ph:${hotos}">
-                            <img th:width="300" th:hight="300" th:src="@{|/photoPost/${ph.getId()}|}">
-                        </tr>
-                    </p>
-                </div>
-
+                <!--                <div class="row">-->
+                <!--                    <p>-->
+                <!--                        <tr th:each="ph:${hotos}">-->
+                <!--                            <img th:width="300" th:hight="300" th:src="@{|/photoPost/${ph.getId()}|}">-->
+                <!--                        </tr>-->
+                <!--                    </p>-->
+                <!--                </div>-->
             </div>
         </div>
         <div class="btn-group" th:if="${user.username.equals('admin') or user.username.equals(post.user.username)}">
