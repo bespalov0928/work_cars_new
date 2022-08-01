@@ -15,30 +15,32 @@ public class PostService {
         this.postStore = postStore;
     }
 
-    public List<Post> findAll(){
+    public List<Post> findAll() {
         return postStore.findAll();
     }
 
-    public void savePost(Post post){
+    public void savePost(Post post) {
         postStore.savePost(post);
     }
 
-    public void savePostNew(Post post, User user, Mark mark, Body body, Transmission transmission, Engine engine){
+    public void savePostNew(Post post, User user, Mark mark, Body body, Transmission transmission, Engine engine) {
         postStore.savePost(post, user, mark, body, transmission, engine);
     }
 
-    public Post findById(int id){
+    public Post findById(int id) {
         return postStore.findById(id);
     }
 
-    public void postSale(int id){
+    public void postSale(int id) {
         postStore.postSale(id);
     }
 
-    public void postUpdate(Post post){
+    public void postUpdate(Post post) {
         postStore.postUpdate(post);
     }
 
-
+    public void postDelete(int id) {
+        postStore.postDelete(id);
+    }
 
 }

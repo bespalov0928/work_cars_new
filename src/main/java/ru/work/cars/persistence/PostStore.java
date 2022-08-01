@@ -64,4 +64,13 @@ public class PostStore implements Store {
         }, sf);
     }
 
+    public void postDelete(int id) {
+        tx(session -> {
+            int index = session.createQuery("delete from Post p where p.id=:id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            return index != 0;
+        }, sf);
+    }
+
 }

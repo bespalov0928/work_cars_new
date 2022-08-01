@@ -155,6 +155,14 @@ public class IndexController {
         return "redirect:/index";
     }
 
+    @GetMapping("/postDelete/{idPost}")
+    public String postDelete(@PathVariable("idPost") int idPost){
+        Post post = postService.findById(idPost);
+        photoService.delPhoto(post.getId());
+        postService.postDelete(idPost);
+        return "redirect:/index";
+    }
+
     @GetMapping("/getPhotoPostFirst/{idPost}")
     public ResponseEntity<Resource> photoFindFirst(@PathVariable("idPost") int idPost) {
         Post post = postService.findById(idPost);
