@@ -47,3 +47,14 @@ create table if not exists posts
     transmission_id INTEGER REFERENCES users (id)
 );
 
+create table if not exists cars
+(
+    id              serial primary key,
+    name            varchar(255),
+    year            varchar(255),
+    body_id         INTEGER REFERENCES bodies (id),
+    engine_id       INTEGER REFERENCES engines (id),
+    mark_id         INTEGER REFERENCES marks (id),
+    transmission_id INTEGER REFERENCES users (id)
+);
+
